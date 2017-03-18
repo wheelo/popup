@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test</title>
+</head>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<body>
+</body>
+<script src="./popup.js"></script>
+<script>
+    var Popup = {
+        Loading: text => new Popup({text, type: 'loading'}),
+        State: text => new Popup({closeTimeout: '1500', type: 'state', text})
+    };
+
+    // 1. loading
+    var loadToastr = Popup.Loading();
+    loadToastr.open();
+    loadToastr.close();
+
+    // 2.State
+    var stateToastr = Popup.State('注册成功');
+    stateToastr.open(1500, 'slow')
+</script>
+</html>
