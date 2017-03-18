@@ -1,6 +1,6 @@
 /**
  * @file 移动端状态弹出框模块
- * @author Erik Peng<pengxiaolong@baidu.com>
+ * @author Erik Peng<wheelo@163.com>
  */
 
 // need zepto or jquery support
