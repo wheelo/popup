@@ -1,5 +1,5 @@
 /**
- * @file 移动端状态弹出框模块
+ * @file: Proof-of-concept of a popup using ES2015
  * @author Erik Peng<wheelo@163.com>
  */
 
@@ -14,6 +14,7 @@ const defaultOptions = {
     'closeTimeout': '5000',   // 显示持续的时间(open时侯用，多长时间后关闭)
     'container': 'popupContainer', // 弹框最外层元素的class
     'fade-duration': 'fast', // fade in/out快慢速度: fast, normal, slow or integer in ms
+    'confirmText': 'JumpText',
     'callback': () => {}
 };
 
@@ -33,10 +34,6 @@ class Popup {
             if (type === 'verify') {
                 this.options.container = 'popupVeirfyContainer';
             }
-        }
-
-        if (type === 'loading' || type === 'confirm' || type === 'verify') {
-            this.options.text = this.options.text || '';
         }
 
         this.stateMarkup = 'popup-' + type;
@@ -95,7 +92,7 @@ class Popup {
         let options = this.options;
         if (options.type === 'confirm') {
             let textWrapper = `<div class="popup-text-dec">${options.text}</div>`
-            let controlField = `<li class="popup-cancel-cancel">取消</li><li class="popup-cancel-jump">立即登录</li>`;
+            let controlField = `<li class="popup-cancel-cancel">取消</li><li class="popup-cancel-jump">${options.confirmText}</li>`;
             $popup = $('<div class="popup ' + this.stateMarkup + '">' + textWrapper
                         + '<ul class="popup-control-field">' + controlField + '</ul></div>');
         }
