@@ -35,7 +35,7 @@ class Popup {
                 this.options.container = 'popupVeirfyContainer';
             }
         }
-
+        this.$popup = '';
         this.stateMarkup = 'popup-' + type;
         this.iconMarkup = this.options.icon ? '<i class="popup-icon icon-' + type + '"></i>' : '';
     }
@@ -64,7 +64,6 @@ class Popup {
 
     openPopup(duration) {
         let options = this.options;
-        let $popup = '';
         // 页面同时刻只能出现一个loading弹出框
         if ($('.' + options['container']).length !== 0) {
             return;
@@ -72,9 +71,9 @@ class Popup {
         let $container = $('<div class="' + options['container'] + '"/>');
         $('html').append($container);
         // 渲染$popup
-        $popup = this.renderElement();
+        this.renderElement();
 
-        $container.append($popup).fadeIn(duration);
+        $container.append(this.$popup).fadeIn(duration);
         // 初始化事件
         this.initEvent(duration);
 
@@ -93,19 +92,18 @@ class Popup {
         if (options.type === 'confirm') {
             let textWrapper = `<div class="popup-text-dec">${options.text}</div>`
             let controlField = `<li class="popup-cancel-cancel">取消</li><li class="popup-cancel-jump">${options.confirmText}</li>`;
-            $popup = $('<div class="popup ' + this.stateMarkup + '">' + textWrapper
+            this.$popup = $('<div class="popup ' + this.stateMarkup + '">' + textWrapper
                         + '<ul class="popup-control-field">' + controlField + '</ul></div>');
         }
         if (options.type === 'state' || options.type === 'loading') {
-            $popup = $('<div class="popup ' + this.stateMarkup + '">' + this.iconMarkup
+            this.$popup = $('<div class="popup ' + this.stateMarkup + '">' + this.iconMarkup
                         + '<div class="popup-text">' + this.options.text + '</div></div>');
         }
         if (options.type === 'verify') {
             let textWrapper = `<div class="popup-text-dec">${options.text}</div>`
-            $popup = $('<div class="popup ' + this.stateMarkup + '">' + textWrapper
+            this.$popup = $('<div class="popup ' + this.stateMarkup + '">' + textWrapper
                         + '<div class="popup-control-field">确定</div></div>');
         }
-        return $popup;
     }
 
     initEvent(duration) {
