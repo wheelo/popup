@@ -14,14 +14,14 @@ Mainly for Proof-of-concept, If you wanna use it, please use it with babel & les
     loadToastr.close();
 
     // 2.State
-    var stateToastr = Popup.State('注册成功');
+    var stateToastr = Popup.State('Success');
     stateToastr.open(1500, 'slow');
 
     // 3. Verify
     var veirfyToastr = Popup.Verify(
-        dec： '请输入描述文字1',
+        dec： 'Desc 1',
         callback() {
-            console.log('点击确定后的回调函数')
+            console.log('callback when clicking confirm')
             // veirfyToastr.close();
         }
     );
@@ -29,9 +29,9 @@ Mainly for Proof-of-concept, If you wanna use it, please use it with babel & les
 
     // 4. Confirm
     var confirmToastr = Popup.Confirm(
-        dec： '请输入描述文字2',
+        dec： 'Desc2',
         callback() {
-            console.log('点击确定后的回调函数')
+            console.log('callback when clicking confirm')
         }
     );
     confirmToastr.open();
