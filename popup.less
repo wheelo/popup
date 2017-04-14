@@ -5,13 +5,34 @@
     width: @width;
     left: 50%; 
     margin-left: -@width/2;
-    background-image: url('../../img/@{url}.@{suffix}');
     background-image: image-set(url('../../img/@{url}.@{suffix}') 1x, url('../../img/@{url}@2x.@{suffix}') 2x);
     background-repeat: no-repeat;
     z-index: 50;
     overflow: hidden;
 }
 
+
+.toastr {
+    text-align: center;
+    color: #ffffff;
+    position: fixed;
+    top: 50%;
+    margin-top: -2.0rem;
+    left: 0;
+    width: 100%;
+    .toastr-simple {    
+        position: relative;
+        width: 8.5rem;
+        margin: 0 auto;
+        border-radius: 0.1rem;
+        padding: 1.15rem 0.85rem;
+        font-size: 0.7rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 999;
+    }
+}
+
+// Loading & State
 .popupContainer {
     text-align: center;
     color: #ffffff;
@@ -23,7 +44,6 @@
     margin-left: -2.75rem;
     margin-top: -2.75rem;
     background-color: rgba(0, 0, 0, 0.6);
-    // opacity: 0.6;
     border-radius: 0.1rem;
     i.popup-icon {
         position: absolute;
@@ -33,7 +53,7 @@
             .backgroundImage('loading', 40px, 40px, 'gif');
         }
         &.icon-state {
-            .backgroundImage('succeed', 40px, 40px);
+            .backgroundImage('succeed', 40px, 30px);
         }
     }
     .popup-text {
@@ -41,6 +61,94 @@
         bottom: 0.8rem;
         text-align: center;
         width: 100%;
-        font-size: 15px;
+        font-size: 0.75rem;
     }
 }
+
+
+// Confirm相关样式
+.popupConfirmContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    .popup-confirm {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -6.75rem;
+        width: 13.5rem;
+        height: 6.7rem;
+        text-align: center;
+        background: #fff;
+        border-radius: 0.2rem;
+        margin-top: -3.35rem;
+        .popup-text-dec {
+            min-height: 4.45rem;
+            padding: 1.4rem;
+            font-size: 0.7rem;
+            color: #2b3138;
+            border-bottom: 1px solid #d6dbe1;
+        }
+        .popup-field {
+            width: 100%;
+            float: left;
+            height: 2.2rem;
+            line-height: 2.2rem;
+        }
+        li {
+            height: 2.2rem;
+            line-height: 2.2rem;
+            font-size: 0.8rem;
+            color: #2b3138;
+            box-sizing: border-box;
+            position: relative;
+            width: 50%;
+            float: left;
+            text-align: center;
+            &:first-child {
+                border-right: 1px solid #d6dbe1;
+            }
+        }
+    }
+}
+
+
+// Veirfy相关样式
+.popupVeirfyContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    .popup-verify {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -6.75rem;
+        width: 13.5rem;
+        height: 6.7rem;
+        text-align: center;
+        background: #fff;
+        border-radius: 0.2rem;
+        margin-top: -3.35rem;
+        .popup-text-dec {
+            min-height: 4.45rem;
+            padding: 1.4rem;
+            font-size: 0.7rem;
+            color: #2b3138;
+            border-bottom: 1px solid #d6dbe1;
+        }
+        .popup-control-field {
+            width: 100%;
+            float: left;
+            height: 2.2rem;
+            line-height: 2.2rem;
+            font-size: 0.8rem;
+        }
+    }
+}
+

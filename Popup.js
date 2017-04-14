@@ -4,6 +4,7 @@
  */
 
 // need zepto or jquery support
+// const objectAssign = require('object-assign');
 
 
 const defaultOptions = {
@@ -12,49 +13,37 @@ const defaultOptions = {
     'text': '',           // 显示的文字
     'closeTimeout': '5000',   // 显示持续的时间(open时侯用，多长时间后关闭)
     'container': 'popupContainer', // 弹框最外层元素的class
-    'fade-duration': 'fast' // fade in/out快慢速度: fast, normal, slow or integer in ms
+    'fade-duration': 'fast', // fade in/out快慢速度: fast, normal, slow or integer in ms
+    'callback': () => {}
 };
 
 
 class Popup {
     constructor(options) {
-        // if compatible happens, ask `object-assign` for a pollifill
+        // if compatible happens, use object-assign for a pollifill
         this.options = Object.assign({}, defaultOptions, options);
         let type = this.options.type;
-        if (type === 'loading') {
-            this.options.text = this.options.text || '请稍候...';
+        if (!this.options.container) {
+            if (type === 'state' || type === 'loading') {
+                this.options.container = 'popupContainer';
+            }
+            if (type === 'confirm') {
+                this.options.container = 'popupConfirmContainer';
+            }
+            if (type === 'verify') {
+                this.options.container = 'popupVeirfyContainer';
+            }
+        }
+
+        if (type === 'loading' || type === 'confirm' || type === 'verify') {
+            this.options.text = this.options.text || '';
         }
 
         this.stateMarkup = 'popup-' + type;
         this.iconMarkup = this.options.icon ? '<i class="popup-icon icon-' + type + '"></i>' : '';
     }
 
-    openPopup(duration) {
-        let options = this.options;
-        // 页面同时刻只能出现一个loading弹出框
-        if ($('.' + options['container']).length !== 0) {
-            return;
-        }
-        let $container = $('<div class="' + options['container'] + '"/>');
-        $('html').append($container);
-        // Generate the HTML
-        let $popup = $('<div class="popup ' + this.stateMarkup + '">' + this.iconMarkup
-                        + '<div class="popup-text">' + this.options.text + '</div></div>');
-
-        if (options.type === 'state') {
-            this.close(options.closeTimeout, duration);
-        }
-        $container.append($popup).fadeIn(duration);
-        return this;
-    }
-
-    closePopup(duration) {
-        $('.' + this.options['container']).fadeOut(duration, function () {
-            $(this).remove();
-        });
-    }
     // timeout: 多长时间后打开，duration: 打开速度
-    // State('设置成功').open(1500, 'slow')
     open(timeout = 0, duration) {
         let options = this.options;
         duration = duration || options['fade-duration'];
@@ -63,7 +52,6 @@ class Popup {
         } else {
             this.openPopup(duration);
         }
-
         return this;
     }
     // timeout: 多长时间后自动关闭，duration: 关闭速度
@@ -74,8 +62,76 @@ class Popup {
         } else {
             this.closePopup(duration);
         }
+        return this;
+    }
+
+    openPopup(duration) {
+        let options = this.options;
+        let $popup = '';
+        // 页面同时刻只能出现一个loading弹出框
+        if ($('.' + options['container']).length !== 0) {
+            return;
+        }
+        let $container = $('<div class="' + options['container'] + '"/>');
+        $('html').append($container);
+        // 渲染$popup
+        $popup = this.renderElement();
+
+        $container.append($popup).fadeIn(duration);
+        // 初始化事件
+        this.initEvent(duration);
 
         return this;
+    }
+
+    closePopup(duration) {
+        $('.' + this.options['container']).fadeOut(duration, function () {
+            $(this).remove();
+        });
+    }
+    
+    // Generate the HTML
+    renderElement() {
+        let options = this.options;
+        if (options.type === 'confirm') {
+            let textWrapper = `<div class="popup-text-dec">${options.text}</div>`
+            let controlField = `<li class="popup-cancel-cancel">取消</li><li class="popup-cancel-jump">立即登录</li>`;
+            $popup = $('<div class="popup ' + this.stateMarkup + '">' + textWrapper
+                        + '<ul class="popup-control-field">' + controlField + '</ul></div>');
+        }
+        if (options.type === 'state' || options.type === 'loading') {
+            $popup = $('<div class="popup ' + this.stateMarkup + '">' + this.iconMarkup
+                        + '<div class="popup-text">' + this.options.text + '</div></div>');
+        }
+        if (options.type === 'verify') {
+            let textWrapper = `<div class="popup-text-dec">${options.text}</div>`
+            $popup = $('<div class="popup ' + this.stateMarkup + '">' + textWrapper
+                        + '<div class="popup-control-field">确定</div></div>');
+        }
+        return $popup;
+    }
+
+    initEvent(duration) {
+        let options = this.options;
+        if (options.type === 'confirm') {
+            $('.popup-cancel-cancel').on('click', e => {
+                this.close(0, 'fast');
+                return false;
+            });
+            $('.popup-cancel-jump').on('click', e => {
+                options.callback();
+                return false;
+            });
+        }
+        if (options.type === 'verify') {
+            $('.popup-control-field').on('click', e => {
+                options.callback();
+                return false;
+            });
+        }
+        if (options.type === 'state') {
+            this.close(options.closeTimeout, duration);
+        }
     }
 
 }
