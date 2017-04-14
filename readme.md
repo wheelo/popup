@@ -22,7 +22,6 @@ Mainly for Proof-of-concept, If you wanna use it, please use it with babel & les
         dec： '请输入描述文字1',
         callback() {
             console.log('点击确定后的回调函数')
-            // location.href = './findpass_phone.html' + location.search;
             // veirfyToastr.close();
         }
     );
